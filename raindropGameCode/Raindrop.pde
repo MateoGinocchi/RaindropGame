@@ -20,12 +20,10 @@ class Raindrop {
     vel.add(acc);
   }
   void reset() {
-    if (loc.y+diam/2>=height) {
-      loc.y = 0;
-      loc.add(vel);
-      vel = new PVector(0, 0);
-      vel.add(acc);
-    }
+    loc.y = 0;
+    vel = new PVector(0,0);
+    vel.add(acc);
+    
   }
   boolean isInContactWith(PVector a) {
       return a.dist(loc)<=diam/2;
