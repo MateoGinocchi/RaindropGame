@@ -4,9 +4,9 @@ class Raindrop {
   int diam; 
 
   //constructor and initialize
-  Raindrop(float x, int y) {
+  Raindrop(float x, float y) {
     loc = new PVector(x, y);
-    diam = 30;
+    diam = 20;
     vel = new PVector(0, 0);
     acc = new PVector(0, .1);
   }
@@ -27,5 +27,8 @@ class Raindrop {
   }
   boolean isInContactWith(PVector a) { //create a bolean to check if the created vector is within the boundary of the circle
       return a.dist(loc)<=diam/2; //if it is less than return a value for true
+  }
+  boolean isInContactWith(Catcher a) { //create a bolean to check if the created vector is within the boundary of the circle
+      return a.loc.dist(loc)<=a.diam/2+diam/2; //if it is less than return a value for true
   }
 }

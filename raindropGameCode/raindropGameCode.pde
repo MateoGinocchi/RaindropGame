@@ -1,7 +1,8 @@
-int count = 50; //initialize a count variable
+int count = 250; //initialize a count variable
 PVector mouse;   //declare a P
 //Raindrop r;      //declare a new Raindrop called r
 Raindrop[] r = new Raindrop[count]; //declare the array
+Catcher c;
 
 
 
@@ -10,9 +11,10 @@ void setup() {
   mouse = new PVector();                //initialize mouse PVector. value is irrelevant since it will be set at the start of void draw(){}
   int i = 0; //declare and initialize i
   while (i<count) { //while new variable is less than count, initialize new raindrop parameters
-    r[i] = new Raindrop(random(width),0);   //Initialize r. The parameters used are the initial x and y positions
+    r[i] = new Raindrop(random(width),random(height));   //Initialize r. The parameters used are the initial x and y positions
     i++;
   }
+  c = new Catcher(50);
 }
 
 void draw() {
@@ -21,11 +23,14 @@ void draw() {
     mouse.set(mouseX, mouseY);             //set value of mouse as mouseX,mouseY
     r[j].display();      //display the raindrop
     r[j].fall();         //make the raindrop fall. It should accelerate as if pulled towards the ground by earth's gravity
-    if (r[j].isInContactWith(mouse)) {      //check to see if the raindrop is in contact with the point represented by the PVector called mouse
+    if (r[j].isInContactWith(c)) {      //check to see if the raindrop is in contact with the point represented by the PVector called mouse or an object of the product class
       r[j].reset();                         //if it is, reset the raindrop
     }
     if (r[j].loc.y > height + r[j].diam/2) {     //check to see if the raindrop goes below the bottom of the screen
       r[j].reset();                           //if it does, reset the raindrop
     }
   }
+  
+  c.show(); //draw catcher ellipse
+  c.update(); //move catcher according to mouse
 }
