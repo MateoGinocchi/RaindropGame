@@ -10,22 +10,22 @@ class Raindrop {
     vel = new PVector(0, 0);
     acc = new PVector(0, .1);
   }
-  void display() {
-    fill(255);
-    noStroke();
-    ellipse(loc.x, loc.y, diam, diam);
+  void display() { //draw the object
+    fill(255);  //set a fill
+    noStroke(); //set no stroke
+    ellipse(loc.x, loc.y, diam, diam); //draw the ellipse
   }
-  void fall() {
-    loc.add(vel);
-    vel.add(acc);
+  void fall() { //add velocity and acceleration to the object
+    loc.add(vel); //add velocity to the location vector
+    vel.add(acc); //add acceleration to the velocity vector
   }
-  void reset() {
-    loc.y = 0;
-    vel = new PVector(0,0);
-    vel.add(acc);
+  void reset() { //returns object to the top of canvas
+    loc.y = 0; //set y coordinate to zero
+    vel = new PVector(0,0); //reset velocity
+    vel.add(acc); //re-add acceleration to velocity
     
   }
-  boolean isInContactWith(PVector a) {
-      return a.dist(loc)<=diam/2;
+  boolean isInContactWith(PVector a) { //create a bolean to check if the created vector is within the boundary of the circle
+      return a.dist(loc)<=diam/2; //if it is less than return a value for true
   }
 }
