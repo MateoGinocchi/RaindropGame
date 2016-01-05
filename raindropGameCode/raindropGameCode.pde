@@ -1,36 +1,52 @@
-int count = 250; //initialize a count variable
-PVector mouse;   //declare a P
-//Raindrop r;      //declare a new Raindrop called r
-Raindrop[] r = new Raindrop[count]; //declare the array
-Catcher c;
+int count = 50;   //initialize a count variable
+int score = 0;    //declare and initialize a value for the good score
+int bad = 0;      //declare and initialize a value for the bad score
+PVector mouse;    //declare a mouse vector
+Catcher c;        //declare a catcher of the catcher class
 
+ArrayList<Raindrop> drop = new ArrayList<Raindrop>(); //declare an array list
 
 
 void setup() {
   size(800, 600); //set a size for canvas
+
+
   mouse = new PVector();                //initialize mouse PVector. value is irrelevant since it will be set at the start of void draw(){}
-  int i = 0; //declare and initialize i
-  while (i<count) { //while new variable is less than count, initialize new raindrop parameters
-    r[i] = new Raindrop(random(width),random(height));   //Initialize r. The parameters used are the initial x and y positions
-    i++;
-  }
-  c = new Catcher(50);
+  c = new Catcher(50);                  //initialize a catcher
 }
 
 void draw() {
-  background(0, 200, 255); //set a background each frame
-  for (int j=0; j<count; j++) { //while j is less than count, perform the functions listed
-    mouse.set(mouseX, mouseY);             //set value of mouse as mouseX,mouseY
-    r[j].display();      //display the raindrop
-    r[j].fall();         //make the raindrop fall. It should accelerate as if pulled towards the ground by earth's gravity
-    if (r[j].isInContactWith(c)) {      //check to see if the raindrop is in contact with the point represented by the PVector called mouse or an object of the product class
-      r[j].reset();                         //if it is, reset the raindrop
+  if (bad>score) {                          //if the bad score is greater than the good score, go to game over
+    background(0);                          //set background to black
+    fill(255, 0, 0);                        //set fill to red
+    textSize(100);                          //set text size
+    textAlign(CENTER);                      //align text
+    text("GAME OVER", width/2, height/2);   //display text "GAME OVER"
+    text(score, width/2, (height/2) + 100); //display good score
+  } else {
+    background(0, 200, 255);                       //set a background each frame
+    drop.add(new Raindrop(random(0, width), 0) );  //initialize the array list
+    textSize(40);                                  //set a text size
+    fill(0);                                       //set a fill
+    textAlign(CENTER);                             //align text 
+    text(score, width/2, 70);                      //display the good score
+    text(bad, width/2, height-10);                 //display the bad score
+
+    for (int j = drop.size() -1; j>=0; j--) { //draw the objects as the size of the array increases
+      Raindrop rain = drop.get(j);            //declare a raindrop for the array
+      rain.display();                         //display "rain"
+      rain.fall();                            //make "rain" fall
+      if (rain.isInContactWith(c)) {          //if "rain" touches the catcher, reset the raindrop and add 1 to the good score
+        rain.reset();
+        score+=1;
+      }
+      if (rain.loc.y > height + rain.diam/2) {//if "rain" goes off the bottom of the screen, reset the raindrop and add 1 to the bad score
+        rain.reset();
+        bad+=1;
+      }
     }
-    if (r[j].loc.y > height + r[j].diam/2) {     //check to see if the raindrop goes below the bottom of the screen
-      r[j].reset();                           //if it does, reset the raindrop
-    }
+    println(score);
+    c.show();    //draw catcher ellipse
+    c.update();  //move catcher according to mouse
   }
-  
-  c.show(); //draw catcher ellipse
-  c.update(); //move catcher according to mouse
 }
